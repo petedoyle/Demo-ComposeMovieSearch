@@ -2,6 +2,7 @@ package com.example.myapplication
 
 import com.example.myapplication.mvvm.ViewModelBase
 import com.example.myapplication.mvvm.ViewModelActions
+import com.example.myapplication.mvvm.ViewModelEvents
 import com.example.myapplication.mvvm.ViewModelState
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
@@ -21,11 +22,15 @@ sealed class MainScreenActions : ViewModelActions {
     data class QuerySubmitted(val query: String) : MainScreenActions()
 }
 
+sealed class MainScreenEvents : ViewModelEvents
+
 /**
  * The [ViewModelBase] for [MainActivity] / [MainScreen].
  */
 @OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
-class MainViewModel : ViewModelBase<MainScreenState, MainScreenActions>(MainScreenState()) {
+class MainViewModel : ViewModelBase<MainScreenState, MainScreenActions, MainScreenEvents>(
+    MainScreenState()
+) {
 
     override fun onAction(action: MainScreenActions) {
         @Exhaustive
