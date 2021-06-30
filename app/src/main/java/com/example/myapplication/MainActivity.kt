@@ -1,72 +1,41 @@
 package com.example.myapplication
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
-import android.view.Menu
-import android.view.MenuItem
-import android.view.ViewGroup
-import android.widget.EditText
-import android.widget.Toast
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.core.widget.doOnTextChanged
-import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.RecyclerView
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
+import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.tooling.preview.Preview
+import com.example.myapplication.ui.theme.MyApplicationTheme
 
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
+class MainActivity : ComponentActivity() {
 
-class MainActivity : AppCompatActivity() {
-
-    private lateinit var input: EditText
-    private lateinit var recyclerView: RecyclerView
     private val viewModel: MainViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        setSupportActionBar(findViewById(R.id.toolbar))
-
-        input = findViewById<EditText>(R.id.input).apply {
-            doOnTextChanged { text, start, count, after ->
-                viewModel.onAction(MainScreenActions.QuerySubmitted(text.toString()))
-            }
-        }
-
-        viewModel.observeMovies()
-                .onEach { movies ->
-                    Toast.makeText(this@MainActivity, "Flow: $movies", Toast.LENGTH_SHORT).show()
+        setContent {
+            MyApplicationTheme {
+                Surface(color = MaterialTheme.colors.background) {
+                    Greeting("Android")
                 }
-                .launchIn(lifecycleScope)
-
-        recyclerView = findViewById(R.id.movies)
-        recyclerView.adapter = object : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-            override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-            }
-
-            override fun getItemCount(): Int {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-            }
-
-            override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
             }
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.menu_main, menu)
-        return true
+    @Composable
+    fun Greeting(name: String) {
+        Text(text = "Hello $name!")
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        return when (item.itemId) {
-            R.id.action_settings -> true
-            else -> super.onOptionsItemSelected(item)
+    @Preview(showBackground = true)
+    @Composable
+    fun DefaultPreview() {
+        MyApplicationTheme {
+            Greeting("Android")
         }
     }
 }
