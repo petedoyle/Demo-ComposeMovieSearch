@@ -15,6 +15,7 @@ abstract class ViewModelBase<S : ViewModelState, A : ViewModelActions>(
     private val _state = MutableStateFlow(initialState)
     val state: StateFlow<S> = _state
 
+    @VisibleForTesting(otherwise = VisibleForTesting.PROTECTED)
     internal fun setState(lambda: S.() -> S) {
         _state.value = lambda(_state.value)
     }
