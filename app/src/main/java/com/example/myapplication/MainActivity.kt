@@ -1,13 +1,11 @@
 package com.example.myapplication
 
 import android.os.Bundle
-import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import android.view.ViewGroup
 import android.widget.EditText
-import android.widget.SimpleAdapter
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.widget.doOnTextChanged
@@ -21,7 +19,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var input: EditText
     private lateinit var recyclerView: RecyclerView
-    private var viewModel: MainViewModel = MainViewModel()
+    private val viewModel: MainViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,7 +28,7 @@ class MainActivity : AppCompatActivity() {
 
         input = findViewById<EditText>(R.id.input).apply {
             doOnTextChanged { text, start, count, after ->
-                viewModel.onAction(Actions.QuerySubmitted(text.toString()))
+                viewModel.onAction(MainScreenActions.QuerySubmitted(text.toString()))
             }
         }
 

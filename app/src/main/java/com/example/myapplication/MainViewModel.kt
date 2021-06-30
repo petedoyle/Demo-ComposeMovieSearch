@@ -1,30 +1,49 @@
 package com.example.myapplication
 
-import androidx.lifecycle.ViewModel
-import kotlinx.coroutines.flow.*
+import com.example.myapplication.mvvm.ViewModelBase
+import com.example.myapplication.mvvm.ViewModelActions
+import com.example.myapplication.mvvm.ViewModelState
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.map
 
-sealed class Actions {
-    class QuerySubmitted(val query: String): Actions()
+/**
+ * A [ViewModelState] for [MainViewModel] / [MainScreen]
+ */
+data class MainScreenState(
+    val query: String = "",
+) : ViewModelState
+
+sealed class MainScreenActions : ViewModelActions {
+    class QuerySubmitted(val query: String) : MainScreenActions()
 }
 
-data class MainUIState(
-    val query: String = "",
-)
+/**
+ * The [ViewModelBase] for [MainActivity] / [MainScreen].
+ */
+@OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
+class MainViewModel : ViewModelBase<MainScreenState, MainScreenActions>(MainScreenState()) {
 
-class MainViewModel : ViewModel<MainUIState>() {
-
-    val uiState: StateFlow = MutableStateFlow(MainUIState())
-
-    fun onAction(action: Actions) {
+    override fun onAction(action: MainScreenActions) {
+        // TODO use https://github.com/cashapp/exhaustive
         when (action) {
-            is Actions.QuerySubmitted -> query.value = action.query
+            is MainScreenActions.QuerySubmitted -> setState { copy(query = action.query) }
         }
     }
 
-    fun observeMovies(): Flow<List<Movie>> = query
-        .map { query ->
-             Movie.MOVIE_TEST_DATA.filter { movie ->
-                 movie.title.contains(query)
-             }
+    fun observeMovies(): Flow<List<Movie>> = state
+        .debounce(QUERY_DEBOUNCE_MILLIS)
+        .map { state ->
+            Movie.MOVIE_TEST_DATA.filter { movie ->
+                movie.title.contains(state.query)
+            }
         }
+        .distinctUntilChanged()
+
+    companion object {
+        private const val QUERY_DEBOUNCE_MILLIS = 300L
+    }
 }
