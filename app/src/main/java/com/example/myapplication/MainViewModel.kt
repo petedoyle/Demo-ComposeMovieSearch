@@ -18,7 +18,7 @@ data class MainScreenState(
 ) : ViewModelState
 
 sealed class MainScreenActions : ViewModelActions {
-    class QuerySubmitted(val query: String) : MainScreenActions()
+    data class QuerySubmitted(val query: String) : MainScreenActions()
 }
 
 /**
