@@ -28,7 +28,7 @@ sealed class MainScreenActions : ViewModelActions {
 class MainViewModel : ViewModelBase<MainScreenState, MainScreenActions>(MainScreenState()) {
 
     override fun onAction(action: MainScreenActions) {
-        // TODO use https://github.com/cashapp/exhaustive
+        @Exhaustive
         when (action) {
             is MainScreenActions.QuerySubmitted -> setState { copy(query = action.query) }
         }
