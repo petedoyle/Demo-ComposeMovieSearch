@@ -1,9 +1,8 @@
 # Compose Movie Search
-This is a simple Android application showing a list of movies, with an ability to search
-through the list. It's written using Jetpack Compose and contains an MVVM / MVI-"ish"
-architecture that I'm currently experimenting with and have found to work well with Compose.
+This is a simple one-screen Jetpack Compose UI app that shows a list of movies,
+with the ability to search the list. It aims to be a real example that is simple
+and straightforward, useful to those touching Compose UI for the first time.
 
-## Demo
 ![Demo](demo.gif)
 
 ## Getting Started
