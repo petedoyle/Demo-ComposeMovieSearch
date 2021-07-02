@@ -3,17 +3,18 @@ This is a simple Android application showing a list of movies, with an ability t
 through the list. It's written using Jetpack Compose and contains an MVVM / MVI-"ish"
 architecture that I'm currently experimenting with and have found to work well with Compose.
 
-Running it locally
-------------------
-1. Download Android Studio Arctic Fox Beta 4 (Android studio [archive](https://developer.android.com/studio/archive)).
-1. Open the root `build.gradle` in Android Studio via `File > Open`.
-
-Demo
-----
+## Demo
 ![Demo](demo.gif)
 
-License
--------
+## Getting Started
+The search screen can be found in `MainActivity` / `MainScreen` in the `app` module.
+
+## Running it locally
+1. Download Android Studio Arctic Fox Beta 4 (Android studio [archive](https://developer.android.com/studio/archive)).
+1. Open the root `build.gradle` in Android Studio via `File > Open`.
+1. Run it
+
+## License
 
     Copyright 2021 Pete Doyle
 
