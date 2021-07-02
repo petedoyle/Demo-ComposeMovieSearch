@@ -8,6 +8,10 @@ Running it locally
 1. Download Android Studio Arctic Fox Beta 4 (Android studio [archive](https://developer.android.com/studio/archive)).
 1. Open the root `build.gradle` in Android Studio via `File > Open`.
 
+Demo
+----
+![Video demo](demo.mp4)
+
 License
 -------
 
