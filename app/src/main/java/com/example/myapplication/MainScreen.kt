@@ -1,7 +1,11 @@
 package com.example.myapplication
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,11 +17,14 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Divider
 import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.Icon
 import androidx.compose.material.Scaffold
 import androidx.compose.material.SnackbarHostState
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.material.TopAppBar
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -83,24 +90,41 @@ private fun Header() {
     )
 }
 
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 private fun SearchField(
     query: String,
     actionHandler: (MainScreenActions) -> Unit,
 ) {
-    TextField(
-        value = query,
-        onValueChange = { newValue ->
-            actionHandler(MainScreenActions.QuerySubmitted(newValue))
-        },
-        keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Words),
-        label = {
-            Text(stringResource(id = R.string.query_hint))
-        },
-        modifier = Modifier
-            .padding(horizontal = Padding.Large)
-            .fillMaxWidth()
-    )
+    Box {
+        TextField(
+            value = query,
+            onValueChange = { newValue ->
+                actionHandler(MainScreenActions.QuerySubmitted(newValue))
+            },
+            keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Words),
+            label = {
+                Text(stringResource(id = R.string.query_hint))
+            },
+            modifier = Modifier
+                .padding(horizontal = Padding.Large)
+                .fillMaxWidth()
+        )
+
+        AnimatedVisibility(
+            visible = query.isNotEmpty(),
+            modifier = Modifier.align(Alignment.CenterEnd)
+        ) {
+            Icon(
+                Icons.Filled.Close,
+                contentDescription = stringResource(R.string.clear),
+                modifier = Modifier
+                    .padding(horizontal = Padding.XLarge)
+                    .clickable { actionHandler(MainScreenActions.QueryCleared) }
+                ,
+            )
+        }
+    }
 }
 
 @OptIn(ExperimentalFoundationApi::class)

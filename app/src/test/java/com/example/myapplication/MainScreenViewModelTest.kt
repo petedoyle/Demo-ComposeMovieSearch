@@ -49,6 +49,19 @@ class MainScreenViewModelTest : TestBase() {
     }
 
     @Test
+    fun `Query should be cleared when clear button clicked`() = runBlockingTest {
+        // Given
+        viewModel.setState { copy(query = "star") }
+        advanceTimeBy(MainScreenViewModel.QUERY_DEBOUNCE_MILLIS) // required since we debounce before querying
+
+        // When
+        viewModel.onAction(MainScreenActions.QueryCleared)
+
+        // Then
+        expect(viewModel.state.value.query).toBe("")
+    }
+
+    @Test
     fun `Focusing movie action should set state`() = runBlockingTest {
         // Given
         val focusedMovie = Movie("Ace Venture: Pet Detective", "1994")

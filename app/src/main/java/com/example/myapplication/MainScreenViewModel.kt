@@ -53,6 +53,7 @@ class MainScreenViewModel : ViewModelBase<MainScreenState, MainScreenActions, Ma
         @Exhaustive
         when (action) {
             is MainScreenActions.QuerySubmitted -> setState { copy(query = action.query) }
+            MainScreenActions.QueryCleared -> setState { copy(query = "") }
             is MainScreenActions.MovieFocused -> setState { copy(focusedMovie = action.movie) }
             MainScreenActions.MovieBlurred -> setState { copy(focusedMovie = null) }
         }
@@ -66,6 +67,7 @@ class MainScreenViewModel : ViewModelBase<MainScreenState, MainScreenActions, Ma
 
 sealed class MainScreenActions : ViewModelActions {
     data class QuerySubmitted(val query: String) : MainScreenActions()
+    object QueryCleared: MainScreenActions()
     data class MovieFocused(val movie: Movie): MainScreenActions()
     object MovieBlurred: MainScreenActions()
 }

@@ -3,4 +3,5 @@
     <string name="query_hint">Movie name</string>
     <string name="main_title">Movie search</string>
     <string name="main_screen_header">Search to filter movies</string>
+    <string name="clear">Clear text</string>
 </resources>
