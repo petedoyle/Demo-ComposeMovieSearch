@@ -12,6 +12,7 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/infra-compose-theme" />
             <option value="$PROJECT_DIR$/infra-coroutine-dispatchers" />
             <option value="$PROJECT_DIR$/infra-mvvm" />
             <option value="$PROJECT_DIR$/infra-testing-unit" />

@@ -1,5 +1,6 @@
 rootProject.name = "My Application"
 include ':app'
-include ':infra-mvvm'
+include ':infra-compose-theme'
 include ':infra-coroutine-dispatchers'
+include ':infra-mvvm'
 include ':infra-testing-unit'
