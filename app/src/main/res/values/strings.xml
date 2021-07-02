@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">My Application</string>
+    <string name="app_name">Movie Search</string>
     <string name="query_hint">Movie name</string>
     <string name="main_title">Movie search</string>
     <string name="main_screen_header">Search to filter movies</string>

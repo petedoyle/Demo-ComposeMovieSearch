@@ -1,4 +1,4 @@
-rootProject.name = "My Application"
+rootProject.name = "Movie Search"
 include ':app'
 include ':infra-compose-theme'
 include ':infra-coroutine-dispatchers'
