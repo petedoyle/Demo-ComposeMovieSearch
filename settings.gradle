@@ -1,4 +1,5 @@
 rootProject.name = "My Application"
 include ':app'
-include ':infra-testing-unit'
+include ':infra-mvvm'
 include ':infra-coroutine-dispatchers'
+include ':infra-testing-unit'
