@@ -9,7 +9,7 @@ and straightforward, useful to those touching Compose UI for the first time.
 The search screen can be found in `MainActivity` / `MainScreen` in the `app` module.
 
 ## Running it locally
-1. Download Android Studio Arctic Fox Beta 4 (Android studio [archive](https://developer.android.com/studio/archive)).
+1. Download Android Studio Arctic Fox Beta 5 (Android studio [archive](https://developer.android.com/studio/archive)).
 1. Open the root `build.gradle` in Android Studio via `File > Open`.
 1. Run it
 
