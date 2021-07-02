@@ -10,7 +10,7 @@ Running it locally
 
 Demo
 ----
-![Video demo](demo.mp4)
+![Demo](demo.mp4)
 
 License
 -------
