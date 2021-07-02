@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import app.cash.exhaustive.Exhaustive
 import com.example.myapplication.mvvm.ViewModelBase
 import com.example.myapplication.mvvm.ViewModelActions
-import com.example.myapplication.mvvm.ViewModelEvents
 import com.example.myapplication.mvvm.ViewModelState
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
@@ -28,7 +27,7 @@ data class MainScreenState(
  * The [ViewModelBase] for [MainActivity] / [MainScreen].
  */
 @OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
-class MainScreenViewModel : ViewModelBase<MainScreenState, MainScreenActions, MainScreenEvents>(
+class MainScreenViewModel : ViewModelBase<MainScreenState, MainScreenActions>(
     MainScreenState()
 ) {
 
@@ -71,5 +70,3 @@ sealed class MainScreenActions : ViewModelActions {
     data class MovieFocused(val movie: Movie): MainScreenActions()
     object MovieBlurred: MainScreenActions()
 }
-
-sealed class MainScreenEvents : ViewModelEvents
