@@ -79,7 +79,7 @@ class MainScreenViewModelTest : TestBase() {
     @Test
     fun `Focusing movie action should set state`() = runBlockingTest {
         // Given
-        val focusedMovie = Movie("Ace Venture: Pet Detective", "1994")
+        val focusedMovie = Movie("Ace Ventura: Pet Detective", "1994")
 
         // When
         viewModel.onAction(MainScreenActions.MovieFocused(focusedMovie))
@@ -91,7 +91,7 @@ class MainScreenViewModelTest : TestBase() {
     @Test
     fun `Focusing on a movie should clear state`() = runBlockingTest {
         // Given
-        viewModel.setState { copy(focusedMovie = Movie("Ace Venture: Pet Detective", "1994")) }
+        viewModel.setState { copy(focusedMovie = Movie("Ace Ventura: Pet Detective", "1994")) }
 
         // When
         viewModel.onAction(MainScreenActions.MovieBlurred)
