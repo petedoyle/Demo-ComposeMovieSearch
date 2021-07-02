@@ -21,6 +21,6 @@ data class Movie(
             Movie("Mr. Deeds", "2002"),
             Movie("Spider-Man: Into the Spider-Verse", "2018"),
             Movie("The Edge", "1997")
-        )
+        ).sortedBy { it.title }
     }
 }

@@ -3,6 +3,8 @@ package com.example.myapplication.mvvm
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.myapplication.dispatchers.DefaultDispatcherProvider
+import com.example.myapplication.dispatchers.DispatcherProvider
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,21 +17,22 @@ import kotlinx.coroutines.launch
  */
 abstract class ViewModelBase<S : ViewModelState, A : ViewModelActions, E : ViewModelEvents>(
     initialState: S,
+    protected val dispatcherProvider: DispatcherProvider = DefaultDispatcherProvider(),
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(initialState)
-    val state: StateFlow<S> = _state
-
     private val _events = MutableSharedFlow<E>()
+
+    val state: StateFlow<S> = _state
     val events: Flow<E> = _events
 
     @VisibleForTesting(otherwise = VisibleForTesting.PROTECTED)
-    internal fun setState(lambda: S.() -> S) {
+    fun setState(lambda: S.() -> S) {
         _state.value = lambda(_state.value)
     }
 
     fun postEvent(event: E) {
-        viewModelScope.launch {
+        viewModelScope.launch(dispatcherProvider.main()) {
             _events.emit(event)
         }
     }

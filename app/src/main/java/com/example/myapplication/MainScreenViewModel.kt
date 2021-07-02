@@ -1,5 +1,6 @@
 package com.example.myapplication
 
+import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.viewModelScope
 import app.cash.exhaustive.Exhaustive
 import com.example.myapplication.mvvm.ViewModelBase
@@ -15,34 +16,30 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 /**
- * A [ViewModelState] for [MainViewModel] / [MainScreen]
+ * [ViewModelState] for [MainScreenViewModel].
  */
 data class MainScreenState(
     val query: String = "",
     val searchResults: List<Movie> = listOf(),
+    val focusedMovie: Movie? = null,
 ) : ViewModelState
-
-sealed class MainScreenActions : ViewModelActions {
-    data class QuerySubmitted(val query: String) : MainScreenActions()
-}
-
-sealed class MainScreenEvents : ViewModelEvents
 
 /**
  * The [ViewModelBase] for [MainActivity] / [MainScreen].
  */
 @OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
-class MainViewModel : ViewModelBase<MainScreenState, MainScreenActions, MainScreenEvents>(
+class MainScreenViewModel : ViewModelBase<MainScreenState, MainScreenActions, MainScreenEvents>(
     MainScreenState()
 ) {
 
     init {
+        // Update search results as the query changes
         viewModelScope.launch {
             state
                 .debounce(QUERY_DEBOUNCE_MILLIS)
                 .map { state ->
                     Movie.MOVIE_TEST_DATA.filter { movie ->
-                        movie.title.contains(state.query)
+                        movie.title.contains(state.query.trim(), ignoreCase = true)
                     }
                 }
                 .distinctUntilChanged()
@@ -56,10 +53,21 @@ class MainViewModel : ViewModelBase<MainScreenState, MainScreenActions, MainScre
         @Exhaustive
         when (action) {
             is MainScreenActions.QuerySubmitted -> setState { copy(query = action.query) }
+            is MainScreenActions.MovieFocused -> setState { copy(focusedMovie = action.movie) }
+            MainScreenActions.MovieBlurred -> setState { copy(focusedMovie = null) }
         }
     }
 
     companion object {
-        private const val QUERY_DEBOUNCE_MILLIS = 300L
+        @VisibleForTesting
+        internal const val QUERY_DEBOUNCE_MILLIS = 100L
     }
 }
+
+sealed class MainScreenActions : ViewModelActions {
+    data class QuerySubmitted(val query: String) : MainScreenActions()
+    data class MovieFocused(val movie: Movie): MainScreenActions()
+    object MovieBlurred: MainScreenActions()
+}
+
+sealed class MainScreenEvents : ViewModelEvents
