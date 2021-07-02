@@ -3,7 +3,6 @@ package com.example.myapplication
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,6 +13,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Divider
 import androidx.compose.material.ExperimentalMaterialApi
@@ -31,8 +31,11 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -90,19 +93,26 @@ private fun Header() {
     )
 }
 
-@OptIn(ExperimentalAnimationApi::class)
+@OptIn(ExperimentalAnimationApi::class, ExperimentalComposeUiApi::class)
 @Composable
 private fun SearchField(
     query: String,
     actionHandler: (MainScreenActions) -> Unit,
 ) {
+    val keyboardController = LocalSoftwareKeyboardController.current
     Box {
         TextField(
             value = query,
             onValueChange = { newValue ->
                 actionHandler(MainScreenActions.QuerySubmitted(newValue))
             },
-            keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Words),
+            keyboardOptions = KeyboardOptions(
+                capitalization = KeyboardCapitalization.Words,
+                imeAction = ImeAction.Done
+            ),
+            keyboardActions = KeyboardActions(
+                onDone = { keyboardController?.hide() }
+            ),
             label = {
                 Text(stringResource(id = R.string.query_hint))
             },
@@ -120,8 +130,7 @@ private fun SearchField(
                 contentDescription = stringResource(R.string.clear),
                 modifier = Modifier
                     .padding(horizontal = Padding.XLarge)
-                    .clickable { actionHandler(MainScreenActions.QueryCleared) }
-                ,
+                    .clickable { actionHandler(MainScreenActions.QueryCleared) },
             )
         }
     }
@@ -142,11 +151,14 @@ private fun SearchResults(
     }
 }
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 private fun SearchResultRow(
     movie: Movie,
     actionHandler: (MainScreenActions) -> Unit,
 ) {
+    val keyboardController = LocalSoftwareKeyboardController.current
+
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
@@ -154,6 +166,7 @@ private fun SearchResultRow(
             .fillMaxWidth()
             .clickable {
                 actionHandler(MainScreenActions.MovieFocused(movie))
+                keyboardController?.hide()
             }
             .padding(horizontal = Padding.Large)
     ) {
