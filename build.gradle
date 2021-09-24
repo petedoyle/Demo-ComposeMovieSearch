@@ -31,6 +31,12 @@ allprojects {
             freeCompilerArgs += "-Xopt-in=kotlin.RequiresOptIn"
         }
     }
+
+    configurations.configureEach {
+        // Remove AppCompat and MDC since we're using Compose and want a smaller APK.
+        exclude group: 'androidx.appcompat'
+        exclude group: 'com.google.android.material', module: 'material'
+    }
 }
 
 task clean(type: Delete) {
